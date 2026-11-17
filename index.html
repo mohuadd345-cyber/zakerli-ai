@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ذاكرلي AI — MVP</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Tahoma,Arial,sans-serif;background:#f5f7fb;color:#172033}
+button,input,select,textarea{font:inherit}button{cursor:pointer}
+.app{display:flex;min-height:100vh}.side{width:250px;background:#111827;color:#fff;padding:22px;position:sticky;top:0;height:100vh}
+.logo{font-size:25px;font-weight:800;margin-bottom:30px}.logo span{color:#60a5fa}
+.nav button{width:100%;border:0;background:transparent;color:#cbd5e1;padding:13px;text-align:right;border-radius:10px;margin:4px 0}.nav button.active,.nav button:hover{background:#1f2937;color:#fff}
+.main{flex:1;padding:28px;max-width:1400px;margin:auto;width:100%}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.card{background:#fff;border:1px solid #e5e7eb;border-radius:18px;padding:20px;box-shadow:0 5px 20px #00000008}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.hero{background:linear-gradient(135deg,#1d4ed8,#7c3aed);color:#fff;border-radius:22px;padding:28px;margin-bottom:18px}
+.hero h1{margin:0 0 8px}.muted{color:#64748b}.hero .muted{color:#dbeafe}
+.stat{font-size:30px;font-weight:800}.tag{display:inline-block;background:#eff6ff;color:#1d4ed8;border-radius:999px;padding:6px 10px;font-size:12px;margin:3px}
+.row{display:flex;gap:10px;align-items:center}.grow{flex:1}
+input,select,textarea{width:100%;border:1px solid #dbe1ea;border-radius:10px;padding:11px;background:#fff}
+.primary{border:0;background:#2563eb;color:#fff;padding:11px 17px;border-radius:10px;font-weight:700}.secondary{border:1px solid #dbe1ea;background:#fff;padding:11px 17px;border-radius:10px}
+.section{display:none}.section.active{display:block}
+.chat{height:430px;overflow:auto;background:#f8fafc;border-radius:14px;padding:15px;border:1px solid #e5e7eb}
+.msg{max-width:78%;padding:12px 14px;border-radius:14px;margin:8px 0;line-height:1.7;white-space:pre-wrap}.ai{background:#fff;border:1px solid #e5e7eb;margin-left:auto}.user{background:#dbeafe;margin-right:auto}
+.composer{display:flex;gap:8px;margin-top:10px}.composer input{flex:1}
+.lesson{padding:14px;border:1px solid #e5e7eb;border-radius:13px;margin:10px 0;background:#fff}
+.progress{height:9px;background:#e5e7eb;border-radius:99px;overflow:hidden}.bar{height:100%;background:#2563eb}
+.quizq{font-weight:700;margin-bottom:12px}.option{display:block;width:100%;text-align:right;background:#fff;border:1px solid #dbe1ea;padding:12px;border-radius:10px;margin:7px 0}.option:hover{border-color:#2563eb}
+.notice{padding:12px;border-radius:10px;background:#fffbeb;border:1px solid #fde68a;margin:10px 0}
+@media(max-width:850px){.side{display:none}.main{padding:16px}.grid{grid-template-columns:1fr}.top{align-items:flex-start;gap:10px;flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="side">
+  <div class="logo">ذاكرلي <span>AI</span></div>
+  <div class="nav">
+    <button class="active" data-page="home">🏠 الرئيسية</button>
+    <button data-page="chat">🤖 المدرس AI</button>
+    <button data-page="subjects">📚 موادي</button>
+    <button data-page="quiz">🧠 اختبار</button>
+    <button data-page="profile">👤 ملفي</button>
+  </div>
+  <div style="position:absolute;bottom:22px;color:#94a3b8;font-size:12px">نسخة تجريبية MVP • مجانية</div>
+</aside>
+<main class="main">
+  <div class="top"><div><div class="muted">أهلاً 👋</div><h2 id="pageTitle">لوحة الطالب</h2></div><div class="tag">MVP Demo</div></div>
+
+  <section id="home" class="section active">
+    <div class="hero">
+      <h1>مذاكرتك بقت معاك في جيبك 🤖</h1>
+      <p class="muted">ارفع محتواك، اسأل، اتدرّب، وخلي الـAI يتابع نقاط ضعفك.</p>
+      <button class="primary" onclick="go('chat')">ابدأ مع المدرس AI</button>
+    </div>
+    <div class="grid">
+      <div class="card"><div class="muted">المواد</div><div class="stat">3</div><small>مواد مضافة</small></div>
+      <div class="card"><div class="muted">التقدم</div><div class="stat">68%</div><div class="progress"><div class="bar" style="width:68%"></div></div></div>
+      <div class="card"><div class="muted">نقاط للمراجعة</div><div class="stat">5</div><small>نقاط ضعف مكتشفة</small></div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3>آخر نشاط</h3>
+      <div class="lesson"><b>Mechanics — Chapter 1</b><br><span class="muted">راجعت 72% من المحتوى</span></div>
+      <div class="lesson"><b>Mathematics — Limits</b><br><span class="muted">حللت 8 أسئلة</span></div>
+    </div>
+  </section>
+
+  <section id="chat" class="section">
+    <div class="card">
+      <div class="row">
+        <div class="grow"><h3>🤖 المدرس AI</h3><span class="muted">في النسخة الحقيقية هنربطه بنموذج AI وملفات الطالب.</span></div>
+        <select id="subject"><option>Mechanics</option><option>Mathematics</option><option>Physics</option></select>
+      </div>
+      <div class="notice">جرب تكتب: «اشرحلي قانون نيوتن الثاني ببساطة» أو «اعمللي سؤال على الحركة».</div>
+      <div id="chatbox" class="chat">
+        <div class="msg ai">أهلاً! أنا مدرسك في ذاكرلي AI. اختار المادة واسألني عن أي جزء من المنهج. في الـMVP التجريبي ده هتجرب طريقة التفاعل، والنسخة القادمة هنربطها بذكاء اصطناعي حقيقي.</div>
+      </div>
+      <div class="composer">
+        <input id="prompt" placeholder="اكتب سؤالك هنا..." onkeydown="if(event.key==='Enter')send()">
+        <button class="primary" onclick="send()">إرسال</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="subjects" class="section">
+    <div class="card">
+      <h3>📚 موادي</h3>
+      <p class="muted">اختار مادة أو أضف مادة جديدة.</p>
+      <div class="grid">
+        <div class="lesson"><span class="tag">هندسة</span><h3>Mechanics</h3><div class="progress"><div class="bar" style="width:72%"></div></div><small>72% مكتمل</small></div>
+        <div class="lesson"><span class="tag">رياضيات</span><h3>Mathematics</h3><div class="progress"><div class="bar" style="width:54%"></div></div><small>54% مكتمل</small></div>
+        <div class="lesson"><span class="tag">فيزياء</span><h3>Physics</h3><div class="progress"><div class="bar" style="width:31%"></div></div><small>31% مكتمل</small></div>
+      </div>
+      <hr style="border:0;border-top:1px solid #eee;margin:20px 0">
+      <h4>إضافة محتوى</h4>
+      <input type="file" id="file" accept=".pdf,.png,.jpg,.jpeg">
+      <button class="secondary" style="margin-top:10px" onclick="fakeUpload()">رفع الملف</button>
+      <div id="uploadStatus" class="muted" style="margin-top:8px"></div>
+    </div>
+  </section>
+
+  <section id="quiz" class="section">
+    <div class="card">
+      <h3>🧠 اختبار سريع — Mechanics</h3>
+      <div id="quizArea">
+        <div class="quizq">إذا كانت القوة المحصلة على جسم تساوي صفرًا، فما حالة الجسم حسب قانون نيوتن الأول؟</div>
+        <button class="option" onclick="answer(false)">يتحرك دائمًا بسرعة متزايدة</button>
+        <button class="option" onclick="answer(true)">يبقى ساكنًا أو يتحرك بسرعة ثابتة في خط مستقيم</button>
+        <button class="option" onclick="answer(false)">تتضاعف كتلته</button>
+        <div id="result"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="profile" class="section">
+    <div class="card">
+      <h3>👤 ملف الطالب</h3>
+      <div class="grid">
+        <div><label class="muted">الجامعة</label><select><option>جامعة تجريبية</option><option>جامعة القاهرة</option><option>جامعة عين شمس</option></select></div>
+        <div><label class="muted">الكلية</label><select><option>هندسة</option><option>علوم</option><option>تجارة</option><option>طب</option></select></div>
+        <div><label class="muted">الفرقة</label><select><option>الأولى</option><option>الثانية</option><option>الثالثة</option><option>الرابعة</option></select></div>
+      </div>
+      <button class="primary" style="margin-top:16px" onclick="alert('تم حفظ البيانات في النسخة التجريبية.')">حفظ</button>
+    </div>
+  </section>
+</main>
+</div>
+<script>
+const titles={home:'لوحة الطالب',chat:'المدرس AI',subjects:'موادي',quiz:'اختبار',profile:'ملفي'};
+function go(id){document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===id));document.getElementById('pageTitle').textContent=titles[id];window.scrollTo(0,0)}
+document.querySelectorAll('.nav button').forEach(b=>b.onclick=()=>go(b.dataset.page));
+function send(){
+ const inp=document.getElementById('prompt'), q=inp.value.trim(); if(!q)return;
+ const box=document.getElementById('chatbox');
+ box.innerHTML += `<div class="msg user">${escapeHtml(q)}</div>`;
+ inp.value='';
+ let ans='هشرحها لك ببساطة خطوة خطوة. في النسخة التجريبية دي أنا بستخدم ردود تجريبية؛ النسخة الحقيقية هنربطها بنموذج ذكاء اصطناعي يقرأ محتوى المادة ويجاوب منه.';
+ if(/نيوتن|قانون/i.test(q)) ans='قانون نيوتن الثاني بيقول إن القوة المحصلة تساوي الكتلة × العجلة: F = m × a. مثال: جسم كتلته 2 kg وعليه قوة 6 N، إذن العجلة = 3 m/s².';
+ else if(/سؤال|اختبار/i.test(q)) ans='سؤال سريع: جسم كتلته 4 kg تؤثر عليه قوة محصلة 20 N. احسب العجلة. اكتب إجابتك وأنا أراجعها معاك.';
+ else if(/شرح|مش فاهم/i.test(q)) ans='تمام. هنقسم الفكرة لثلاث خطوات: 1) نفهم المصطلح، 2) نكتب القانون، 3) نطبق على مثال. ابعتلي الجزء اللي مش فاهمه.';
+ box.innerHTML += `<div class="msg ai">${ans}</div>`;box.scrollTop=box.scrollHeight;
+}
+function escapeHtml(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function fakeUpload(){const f=document.getElementById('file').files[0];document.getElementById('uploadStatus').textContent=f?`تم اختيار «${f.name}». في النسخة الحقيقية سيقرأ الـAI الملف ويحوّله لمادة قابلة للمحادثة.`:'اختار ملف PDF أو صورة أولاً.'}
+function answer(ok){document.getElementById('result').innerHTML=ok?'<div class="notice">✅ إجابة صحيحة! ممتاز.</div>':'<div class="notice">❌ مش دي. راجع قانون نيوتن الأول وجرب تاني.</div>'}
+</script>
+</body>
+</html>
